@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+#login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#google-login {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#game {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#game-area {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    margin: 20px auto;
+    background-color: #e0e0e0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.player {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+#player1 {
+    background-color: blue;
+}
+
+#player2 {
+    background-color: green;
+}
+
+#status {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
