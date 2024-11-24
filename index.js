@@ -105,6 +105,20 @@ document.addEventListener("keydown", async (event) => {
     }
 });
 
+async function clearGame() {
+    const gameRef = doc(db, "games", "game1");
+    await setDoc(gameRef, {
+        player1: null,
+        player1Position: { x: 50, y: 0 },
+        player2: null,
+        player2Position: { x: MAX_X - 50, y: 0 },
+        status: "waiting"
+    });
+    console.log("Game reset to initial state.");
+}
+
+document.getElementById("clear-game").addEventListener("click", clearGame);
+
 setInterval(async () => {
     const gameRef = doc(db, "games", "game1");
     const gameSnapshot = await getDoc(gameRef);
