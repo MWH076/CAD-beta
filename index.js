@@ -1,7 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
 const firebaseConfig = {
     apiKey: "AIzaSyDY6K-eT453xY_-KVw12qE10_s8BcAy1EA",
     authDomain: "cad-beta.firebaseapp.com",
@@ -11,9 +7,9 @@ const firebaseConfig = {
     appId: "1:1064813950737:web:e9bd9b846cec933610feb0"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
 const authContainer = document.getElementById("auth-container");
 const gameContainer = document.getElementById("game-container");
@@ -42,8 +38,9 @@ function renderGame() {
 
 function updatePlayerPosition(player, x, y) {
     if (gameSession) {
-        const gameDoc = doc(db, "games", gameSession.id);
-        updateDoc(gameDoc, { [`positions.${player}`]: { x, y } });
+        db.collection("games").doc(gameSession.id).update({
+            [`positions.${player}`]: { x, y }
+        });
     }
 }
 
@@ -59,12 +56,11 @@ function handleKeyPress(event) {
 }
 
 async function joinGame(user) {
-    const gamesRef = collection(db, "games");
-    const q = query(gamesRef, where("isFull", "==", false));
-    const gameSnapshot = await getDocs(q);
+    const gamesRef = db.collection("games");
+    const querySnapshot = await gamesRef.where("isFull", "==", false).get();
 
-    if (gameSnapshot.empty) {
-        const newGame = await addDoc(gamesRef, {
+    if (querySnapshot.empty) {
+        const newGame = await gamesRef.add({
             players: { player1: user.uid },
             positions: playerPositions,
             isFull: false
@@ -72,20 +68,20 @@ async function joinGame(user) {
         gameSession = { id: newGame.id, data: { players: { player1: user.uid }, positions: playerPositions, isFull: false } };
         currentPlayer = "player1";
     } else {
-        const gameDoc = gameSnapshot.docs[0];
+        const gameDoc = querySnapshot.docs[0];
         const gameData = gameDoc.data();
 
         currentPlayer = "player2";
         gameData.players.player2 = user.uid;
         gameData.isFull = true;
 
-        await updateDoc(doc(db, "games", gameDoc.id), gameData);
+        await gamesRef.doc(gameDoc.id).update(gameData);
 
         gameSession = { id: gameDoc.id, data: gameData };
     }
 
-    onSnapshot(doc(db, "games", gameSession.id), (docSnapshot) => {
-        const data = docSnapshot.data();
+    db.collection("games").doc(gameSession.id).onSnapshot((doc) => {
+        const data = doc.data();
         playerPositions = data.positions;
         renderGame();
     });
@@ -97,8 +93,8 @@ function initializeGame() {
 }
 
 loginBtn.addEventListener("click", async () => {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const result = await auth.signInWithPopup(provider);
 
     const user = result.user;
     authContainer.style.display = "none";
@@ -109,6 +105,6 @@ loginBtn.addEventListener("click", async () => {
 });
 
 logoutBtn.addEventListener("click", async () => {
-    await signOut(auth);
+    await auth.signOut();
     location.reload();
 });
