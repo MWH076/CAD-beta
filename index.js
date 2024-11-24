@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, updateDoc, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, updateDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDY6K-eT453xY_-KVw12qE10_s8BcAy1EA",
@@ -31,7 +31,7 @@ document.getElementById("google-login").addEventListener("click", async () => {
 
 async function joinGame(user) {
     const gameRef = doc(db, "games", "game1");
-    const gameSnapshot = await gameRef.get();
+    const gameSnapshot = await getDoc(gameRef);
 
     if (!gameSnapshot.exists()) {
         await setDoc(gameRef, {
@@ -93,13 +93,12 @@ document.addEventListener("keydown", async (event) => {
     }
 
     const gameRef = doc(db, "games", "game1");
-    const positionField = currentPlayer === "player1" ? "player1Position" : "player2Position";
-    const gameSnapshot = await gameRef.get();
+    const gameSnapshot = await getDoc(gameRef);
     const gameData = gameSnapshot.data();
-    const currentPosition = gameData[positionField];
+    const currentPosition = gameData[currentPlayer === "player1" ? "player1Position" : "player2Position"];
 
     await updateDoc(gameRef, {
-        [positionField]: {
+        [currentPlayer === "player1" ? "player1Position" : "player2Position"]: {
             x: currentPosition.x + movement.x,
             y: currentPosition.y + movement.y
         }
