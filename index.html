@@ -4,26 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiplayer Game</title>
-    <script type="module" src="index.js"></script>
+    <title>CAD Beta</title>
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <div id="login">
-        <button id="google-login">Login with Google</button>
+    <div id="auth-container">
+        <p>Hi Gabriel 🤪🤪</p>
+        <button id="login-btn">Login with Google</button>
     </div>
-
-    <div id="game" style="display: none;">
-        <div id="status">Waiting for players...</div>
-        <div id="controls">
-            <button id="clear-game">Reset Game</button>
-        </div>
-        <div id="game-area">
-            <img id="player1" class="player" src="player1.png" alt="Player 1">
-            <img id="player2" class="player" src="player2.png" alt="Player 2">
-        </div>
+    <div id="game-container" style="display: none;">
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+        <button id="logout-btn">Logout</button>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>

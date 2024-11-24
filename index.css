@@ -2,44 +2,39 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
-}
-
-#login {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #f0f0f0;
 }
 
-#google-login {
+#auth-container {
+    text-align: center;
+}
+
+#game-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+canvas {
+    border: 2px solid #000;
+    background-color: #fff;
+}
+
+button {
+    margin: 10px;
     padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4285f4;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-#game {
-    text-align: center;
-    margin-top: 20px;
-}
-
-#game-area {
-    position: relative;
-    width: 600px;
-    height: 400px;
-    margin: 20px auto;
-    background-color: #e0e0e0;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.player {
-    position: absolute;
-    width: 40px;
-    height: 40px;
+button:hover {
+    background-color: #0056b3;
 }
